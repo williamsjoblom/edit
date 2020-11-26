@@ -10,7 +10,9 @@ target_sources(edit PRIVATE
   main.cc
   term.cc
   frame.cc
-  buffer.cc)
+  buffer.cc
+  rope.cc
+  arena.cc)
 
 target_include_directories(edit SYSTEM PRIVATE $ENV{INCLUDE})
 set(CMAKE_BUILD_TYPE Debug)

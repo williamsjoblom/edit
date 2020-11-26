@@ -15,16 +15,17 @@
 #include "frame.hh"
 #include "buffer.hh"
 #include "rope.hh"
+#include "arena.hh"
 
 void resize_handler(int) {
     active_frame().update_size();
 }
 
 std::string open(std::string path) {
-  std::ifstream ifs;
-  ifs.open(path, std::ios::in);
-  return std::string(std::istreambuf_iterator<char>(ifs),
-                     std::istreambuf_iterator<char>{});
+    std::ifstream ifs;
+    ifs.open(path, std::ios::in);
+    return std::string(std::istreambuf_iterator<char>(ifs),
+                       std::istreambuf_iterator<char>{});
 }
 
 bool tick() {
@@ -68,6 +69,27 @@ bool tick() {
 }
 
 int main(int argc, char* argv[]) {
+    Arena<RopeNode> arena(60);
+
+    auto* a = make_rope("hello_");
+    auto* b = make_rope("my_");
+    auto* c = make_rope("na");
+    auto* d = make_rope("me_i");
+    auto* e = make_rope("s");
+    auto* f = make_rope("_simon");
+
+    auto* root = a; //->concat(b)->concat(c)->concat(d)->concat(e)->concat(f);
+    // root = insert(root, "hello, world", 3);
+    // std::cout << render(root) << std::endl;
+
+    root = root->insert("anus", 3);
+    root->dump();
+
+    for (char c : *root) {
+        std::cout << (int)c << "(" << c << ") ";
+    }
+
+    return 0;
     signal(SIGWINCH, resize_handler);
 
     if (argc != 2) { return 1; }
